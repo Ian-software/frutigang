@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ff4f8b">
+  <title>FRUTIGANG · Cócteles de frutas</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#inicio">FRUTIGANG</a>
+  <nav>
+    <button id="accountBtn" class="btn btn-light">Registrarse / Crear cuenta</button>
+    <button id="adminBtn" class="btn btn-dark">Admin</button>
+    <button id="cartBtn" class="cart-btn" aria-label="Carrito">🛒 <span id="cartCount">0</span></button>
+  </nav>
+</header>
+
+<main>
+<section id="inicio" class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">FRUTA • FRESCURA • DIVERSIÓN</span>
+    <h1>Haz tu pedido<br><span>a tus gustos</span></h1>
+    <p>Arma tu cóctel con frutas frescas, acompañamientos y toppings.</p>
+    <button class="btn btn-primary btn-lg" id="heroOrder">¡ORDENA YA!</button>
+  </div>
+  <div class="hero-art">
+    <div class="price-badge">$0.75</div>
+    <div class="realistic-hero-card">
+      <div class="shine"></div>
+      <img src="assets/cocktail-realistic-base.jpg" alt="Cóctel de frutas FrutiGang">
+      <div class="hero-fruit-label">🍉 🍓 🥝 🥭 🍍 🍇</div>
+    </div>
+  </div>
+</section>
+
+<section id="builder" class="builder hidden">
+  <div class="section-head">
+    <div><span class="eyebrow">PERSONALIZA</span><h2>Arma tu FrutiGang</h2></div>
+    <button id="backHome" class="btn btn-light">← Inicio</button>
+  </div>
+  <div class="steps"><span class="step active" data-step="1">1 Acompañamientos</span><span class="line"></span><span class="step" data-step="2">2 Toppings</span></div>
+
+  <div class="builder-layout">
+    <aside class="step-rail">
+      <div class="rail-step active"><span>1</span><b>Acompañamientos</b><small>Personaliza tu base</small></div>
+      <div class="rail-line"></div>
+      <div class="rail-step"><span>2</span><b>Toppings</b><small>Agrega tu toque</small></div>
+      <div class="rail-line"></div>
+      <div class="rail-step"><span>🛒</span><b>Carrito</b><small>Revisa y compra</small></div>
+    </aside>
+    <div class="builder-grid">
+    <div class="preview-card">
+      <div class="preview-label">TU CÓCTEL</div>
+      <div id="cocktailPreview" class="preview-cup realistic-preview">
+        <div class="realistic-cocktail-wrap">
+          <img class="realistic-cocktail" src="assets/cocktail-realistic-base.jpg" alt="Cóctel de frutas personalizado">
+          <div id="previewVanilla" class="real-layer layer-vanilla hidden">🍨</div>
+          <div id="previewWhip" class="real-layer layer-whip hidden">☁️</div>
+          <div id="previewChocolate" class="real-layer layer-chocolate hidden">🍫</div>
+          <div id="previewHoney" class="real-layer layer-honey hidden">🍯</div>
+          <div id="previewCaramel" class="real-layer layer-caramel hidden">🍮</div>
+          <div id="previewJelly" class="real-layer layer-jelly hidden">🍓</div>
+          <div id="previewSprinkles" class="real-layer layer-sprinkles hidden">🌈</div>
+          <div id="previewCherry" class="real-layer layer-cherry hidden">🍒</div>
+        </div>
+      </div>
+      <div class="base-fruits">
+  <span>🍉<small>Sandía</small></span><span>🥭<small>Mango</small></span><span>🍇<small>Uva</small></span>
+  <span>🍓<small>Fresas</small></span><span>🥝<small>Kiwi</small></span><span>🍍<small>Piña</small></span>
+</div>
+    </div>
+
+    <div class="options-card">
+      <div id="step1Panel">
+        <div class="product-price"><div><span class="muted">Cóctel base</span><h3>$0.75</h3></div><div id="price1" class="live-price">$0.75</div></div>
+        <h3>Acompañamiento</h3>
+        <p class="muted">Puedes elegir ninguno, uno o ambos.</p>
+        <div class="option-grid two">
+          <button class="option" data-type="side" data-id="vanilla" data-price="0.50"><span class="option-img">🍨</span><b>Helado de vainilla</b><small>+$0.50</small></button>
+          <button class="option" data-type="side" data-id="whip" data-price="0.25"><span class="option-img">☁️</span><b>Crema chantilly</b><small>+$0.25</small></button>
+        </div>
+        <button id="toStep2" class="btn btn-primary full">Siguiente →</button>
+      </div>
+
+      <div id="step2Panel" class="hidden">
+        <div class="product-price"><div><span class="muted">Precio actualizado</span><h3>Tu combinación</h3></div><div id="price2" class="live-price">$0.75</div></div>
+        <h3>Toppings</h3>
+        <p class="muted">Selecciona todos los que quieras. Cada uno cuesta $0.10.</p>
+        <div class="option-grid">
+          <button class="option compact" data-type="topping" data-id="chocolate" data-price="0.10"><span>🍫</span><b>Jarabe de chocolate</b><small>+$0.10</small></button>
+          <button class="option compact" data-type="topping" data-id="honey" data-price="0.10"><span>🍯</span><b>Miel</b><small>+$0.10</small></button>
+          <button class="option compact" data-type="topping" data-id="caramel" data-price="0.10"><span>🍮</span><b>Caramelo</b><small>+$0.10</small></button>
+          <button class="option compact" data-type="topping" data-id="jelly" data-price="0.10"><span>🍓</span><b>Jalea de fresas</b><small>+$0.10</small></button>
+          <button class="option compact" data-type="topping" data-id="sprinkles" data-price="0.10"><span>🌈</span><b>Chispas</b><small>+$0.10</small></button>
+          <button class="option compact" data-type="topping" data-id="cherry" data-price="0.10"><span>🍒</span><b>Cereza</b><small>+$0.10</small></button>
+        </div>
+        <div class="actions"><button id="toStep1" class="btn btn-light">← Atrás</button><button id="addCart" class="btn btn-primary">Añadir al carrito 🛒</button></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section id="cartSection" class="cart-section hidden">
+  <div class="section-head"><div><span class="eyebrow">TU PEDIDO</span><h2>Carrito de compras</h2></div><button id="closeCart" class="btn btn-light">Seguir comprando</button></div>
+  <div id="cartItems" class="cart-items"></div>
+  <div class="cart-total"><span>Total</span><strong id="cartTotal">$0.00</strong></div>
+  <button id="buyBtn" class="btn btn-primary btn-lg full">Comprar</button>
+</section>
+
+<section id="adminSection" class="admin-section hidden">
+  <div class="section-head"><div><span class="eyebrow">ADMINISTRACIÓN</span><h2>Pedidos recibidos</h2></div><button id="logoutAdmin" class="btn btn-light">Cerrar Admin</button></div>
+  <div id="adminStats" class="stats"></div>
+  <div id="ordersTable" class="orders-table"></div>
+</section>
+</main>
+
+<div id="authModal" class="modal hidden">
+  <div class="modal-box">
+    <button class="modal-close" data-close="authModal">×</button>
+    <div class="auth-tabs"><button id="tabRegister" class="active">Crear cuenta</button><button id="tabLogin">Iniciar sesión</button></div>
+    <form id="registerForm">
+      <h2>Regístrate para ordenar</h2>
+      <label>Correo electrónico<input id="regEmail" type="email" required></label>
+      <label>Nombre completo<input id="regName" required maxlength="100"></label>
+      <div class="form-row"><label>Sección<input id="regSection" placeholder="Ej. A" required></label><label>Grado<input id="regGrade" placeholder="Ej. 2.º año" required></label></div>
+      <label>Número de teléfono <span class="muted">(opcional)</span><input id="regPhone" inputmode="tel" maxlength="15"></label>
+      <label>Contraseña<input id="regPassword" type="password" minlength="6" required></label>
+      <button class="btn btn-primary full">Crear cuenta</button>
+      <p id="registerMsg" class="form-msg"></p>
+    </form>
+    <form id="loginForm" class="hidden">
+      <h2>Bienvenido de nuevo</h2>
+      <label>Correo electrónico<input id="loginEmail" type="email" required></label>
+      <label>Contraseña<input id="loginPassword" type="password" required></label>
+      <button class="btn btn-primary full">Iniciar sesión</button>
+      <p id="loginMsg" class="form-msg"></p>
+    </form>
+  </div>
+</div>
+
+<div id="confirmModal" class="modal hidden">
+  <div class="modal-box confirm-box">
+    <button class="modal-close" data-close="confirmModal">×</button>
+    <div class="confirm-icon">🍓</div><h2>¿Estás seguro de comprar este cóctel?</h2>
+    <div id="confirmDetails"></div>
+    <div class="actions"><button class="btn btn-light" data-close="confirmModal">No</button><button id="confirmBuy" class="btn btn-primary">Sí, comprar</button></div>
+  </div>
+</div>
+
+<div id="adminLoginModal" class="modal hidden">
+  <div class="modal-box small">
+    <button class="modal-close" data-close="adminLoginModal">×</button>
+    <h2>Acceso administrativo</h2>
+    <p class="muted">Introduce la contraseña del panel.</p>
+    <form id="adminForm"><label>Contraseña<input id="adminPassword" type="password" required></label><button class="btn btn-dark full">Entrar</button><p id="adminMsg" class="form-msg"></p></form>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
